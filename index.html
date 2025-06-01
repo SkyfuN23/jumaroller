@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cotizador de Cortinas Roller</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      width: 100%;
+      max-width: 400px;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      animation: slideUp 0.6s ease-out;
+    }
+    
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .header h2 {
+      color: #2d3748;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .header p {
+      color: #718096;
+      font-size: 0.9rem;
+    }
+    
+    .input-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    
+    .input-group label {
+      display: block;
+      color: #4a5568;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .input-group input {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #f7fafc;
+    }
+    
+    .input-group input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      background: white;
+    }
+    
+    .input-icon {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #a0aec0;
+      font-size: 0.9rem;
+      pointer-events: none;
+    }
+    
+    .results {
+      margin-top: 2rem;
+      space-y: 1rem;
+    }
+    
+    .result-item {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+      text-align: center;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 15px rgba(240, 147, 251, 0.3);
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    .result-item.cost-usd {
+      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+      color: #2d3748;
+      box-shadow: 0 4px 15px rgba(168, 237, 234, 0.3);
+    }
+    
+    .result-item.cost-pesos {
+      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+      color: #2d3748;
+      box-shadow: 0 4px 15px rgba(252, 182, 159, 0.3);
+    }
+    
+    .result-item.sale-value {
+      background: linear-gradient(135deg, #a8e6cf 0%, #88d8a3 100%);
+      color: #2d3748;
+      box-shadow: 0 4px 15px rgba(168, 230, 207, 0.3);
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .result-label {
+      display: block;
+      font-size: 0.8rem;
+      opacity: 0.8;
+      margin-bottom: 0.25rem;
+    }
+    
+    .result-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    
+    .sale-value .result-value {
+      font-size: 1.4rem;
+    }
+    
+    /* Animación para números que cambian */
+    .result-value {
+      transition: all 0.3s ease;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: #718096;
+      font-size: 0.8rem;
+    }
+    
+    /* Responsive para pantallas muy pequeñas */
+    @media (max-width: 320px) {
+      .container {
+        padding: 1.5rem;
+      }
+      
+      .header h2 {
+        font-size: 1.3rem;
+      }
+      
+      .input-group input {
+        padding: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2>🏠 Cotizador Roller</h2>
+      <p>Calcula el precio de tus cortinas</p>
+    </div>
+
+    <div class="input-group">
+      <label for="ancho">Ancho</label>
+      <input type="number" id="ancho" step="0.01" placeholder="0.00">
+      <span class="input-icon">m</span>
+    </div>
+
+    <div class="input-group">
+      <label for="alto">Alto</label>
+      <input type="number" id="alto" step="0.01" placeholder="0.00">
+      <span class="input-icon">m</span>
+    </div>
+
+    <div class="input-group">
+      <label for="multiplicador">Multiplicador de Venta</label>
+      <input type="number" id="multiplicador" step="0.01" value="1" placeholder="1.00">
+      <span class="input-icon">×</span>
+    </div>
+
+    <div class="results">
+      <div class="result-item cost-usd" id="usd">
+        <span class="result-label">Costo en USD</span>
+        <div class="result-value">$0.00</div>
+      </div>
+      
+      <div class="result-item cost-pesos" id="pesos">
+        <span class="result-label">Costo en Pesos</span>
+        <div class="result-value">$0.00</div>
+      </div>
+      
+      <div class="result-item sale-value" id="venta">
+        <span class="result-label">💰 Valor de Venta</span>
+        <div class="result-value">$0.00</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Dólar: $1,200 ARS
+    </div>
+  </div>
+
+  <script>
+    const precios = {
+      BLACKOUT: 6.776,
+      CAÑO32: 4.638333333,
+      ZOCALO: 4.84,
+      MECANISMO32: 3.993,
+      CADENA: 0.484,
+      FRENO: 0.2662,
+      CONECTOR: 0.1331,
+      TAPAZOCALO: 0.3388,
+      PESOCADENA: 1.089
+    };
+
+    const dolar = 1200;
+
+    // Función para formatear números con separadores de miles
+    function formatNumber(num) {
+      return new Intl.NumberFormat('es-AR', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }).format(num);
+    }
+
+    document.querySelectorAll('input').forEach(input => {
+      input.addEventListener('input', calcular);
+    });
+
+    function calcular() {
+      const ancho = parseFloat(document.getElementById('ancho').value) || 0;
+      const alto = parseFloat(document.getElementById('alto').value) || 0;
+      const multiplicador = parseFloat(document.getElementById('multiplicador').value) || 1;
+
+      const costoUSD =
+        ancho * (alto + 0.3) * precios.BLACKOUT +
+        precios.CAÑO32 * ancho +
+        precios.ZOCALO * ancho +
+        precios.MECANISMO32 +
+        precios.CADENA * alto * 0.75 +
+        precios.FRENO +
+        precios.CONECTOR +
+        precios.TAPAZOCALO +
+        precios.PESOCADENA;
+
+      const costoPesos = costoUSD * dolar;
+      const valorVenta = costoPesos * multiplicador;
+
+      // Actualizar con animación suave
+      updateResult('usd', `$${formatNumber(Math.round(costoUSD))}`);
+      updateResult('pesos', `$${formatNumber(Math.round(costoPesos))}`);
+      updateResult('venta', `$${formatNumber(Math.round(valorVenta))}`);
+    }
+
+    function updateResult(elementId, value) {
+      const element = document.getElementById(elementId).querySelector('.result-value');
+      element.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        element.textContent = value;
+        element.style.transform = 'scale(1)';
+      }, 150);
+    }
+
+    // Calcular al cargar la página
+    calcular();
+  </script>
+</body>
+</html>
